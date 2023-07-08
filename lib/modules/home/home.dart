@@ -30,12 +30,15 @@ List<String> images = [
 class _HomePageState extends State<HomePage> {
   ImagesModel? imagesModel;
   int page = 1;
-  getImages() async {
+  TextEditingController searchController = TextEditingController();
+  getImages({String? keyword}) async {
     imagesModel = null;
     setState(() {});
-
-    imagesModel = await fetchData();
-
+    if (keyword == null) {
+      imagesModel = await fetchData();
+    }else{
+      imagesModel = await fetchSearchData(keyword: keyword);
+    }
     setState(() {});
   }
 
@@ -118,6 +121,7 @@ class _HomePageState extends State<HomePage> {
                                     color: Colors.white,
                                     fontSize: 20,
                                   ),
+                                  controller: searchController,
                                   decoration: InputDecoration(
                                     label: SizedBox(
                                       width: 250.0,
@@ -151,7 +155,9 @@ class _HomePageState extends State<HomePage> {
                               ),
                               Spacer(),
                               IconButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  getImages();
+                                },
                                 icon: SizedBox(
                                     child: Lottie.asset(
                                         'assets/52102-searching.json')),
