@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           MasonryGridView.count(
+            shrinkWrap: true, 
             crossAxisCount: 3,
             mainAxisSpacing: 4,
             crossAxisSpacing: 4,
