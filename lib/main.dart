@@ -37,40 +37,89 @@ class _MyHomePageState extends State<MyHomePage> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Column(
+          children: [
+            Text("Alamy!"),
+            SizedBox(
+              width: size.width - 20,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.transparent,
       ),
       body: Column(
         children: [
-          Text("Alamy!"),
-          SizedBox(
-            width: size.width - 20,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-          ),
           MasonryGridView.count(
-            shrinkWrap: true, 
+            shrinkWrap: true,
             crossAxisCount: 3,
             mainAxisSpacing: 4,
             crossAxisSpacing: 4,
             itemBuilder: (context, index) {
-              return Container(
-                color: Colors.primaries[index % Colors.primaries.length],
+              return Tile(
+                index: index,
+                extent: (index % 5 + 1) * 100,
               );
             },
-          )
+          ),
         ],
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class Tile extends StatelessWidget {
+  const Tile({
+    Key? key,
+    required this.index,
+    this.extent,
+    this.backgroundColor,
+    this.bottomSpace,
+  }) : super(key: key);
+
+  final int index;
+  final double? extent;
+  final double? bottomSpace;
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final child = Container(
+      decoration: BoxDecoration(
+        color: backgroundColor ??
+            Colors.primaries[index % Colors.primaries.length],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: extent,
+      child: Center(
+        child: CircleAvatar(
+          minRadius: 20,
+          maxRadius: 20,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          child: Text('$index', style: const TextStyle(fontSize: 20)),
+        ),
+      ),
+    );
+
+    if (bottomSpace == null) {
+      return child;
+    }
+
+    return Column(
+      children: [
+        Expanded(child: child),
+        Container(
+          height: bottomSpace,
+          color: Colors.green,
+        )
+      ],
     );
   }
 }
