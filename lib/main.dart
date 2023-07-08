@@ -49,11 +49,53 @@ class _MyHomePageState extends State<MyHomePage> {
                 )),
             SizedBox(
               width: size.width - 60,
-              height: 50,
+              height: 55,
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: Color(0xff1E1E1E),
                   borderRadius: BorderRadius.circular(20),
+                ),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 20,
+                    ),
+                    SizedBox(
+                      width: size.width/1.5,
+                      child: TextField(
+                        
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: "Search",
+                          hintStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                          
+                          border: InputBorder.none,
+                          
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+                    IconButton(
+                      onPressed: () {},
+                      icon: Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          color: Color(0xff489BFE),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Icon(
+                          Icons.search,
+                          color: Colors.black,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),
