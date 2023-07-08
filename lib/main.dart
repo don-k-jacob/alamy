@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'dart:ui' as ui;
 
 void main() {
   runApp(const MyApp());
@@ -35,88 +36,123 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        toolbarHeight: 120,
-        title: Column(
-          children: [
-            Text("Alamy!",
-                style: TextStyle(
-                  color: Color(0xff6597CD),
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                )),
-            SizedBox(
-              width: size.width - 60,
-              height: 55,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: Color(0xff1E1E1E),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Row(
-                  children: [
-                    SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: size.width/1.5,
-                      child: TextField(
-                        
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20,
+    return SizedBox(
+      width: size.width,
+      height: size.height,
+      child: DecoratedBox(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage("assets/don.gif"),
+          filterQuality: FilterQuality.high,
+          fit: BoxFit.cover,
+        )),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            color: Colors.black.withOpacity(0.9),
+          ),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            appBar: AppBar(
+              toolbarHeight: 150,
+              title: Column(
+                children: [
+                  const Text("Alamy!",
+                      style: TextStyle(
+                        color: Color(0xff6597CD),
+                        fontSize: 30,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  SizedBox(
+                    width: size.width - 60,
+                    height: 55,
+                    child: ClipRect(
+                      child: BackdropFilter(
+                        filter: ui.ImageFilter.blur(
+                          sigmaX: 6.0,
+                          sigmaY: 6.0,
                         ),
-                        decoration: InputDecoration(
-                          hintText: "Search",
-                          hintStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            // color: Color(0xff1E1E1E),
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(20),
                           ),
-                          
-                          border: InputBorder.none,
-                          
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 20,
+                              ),
+                              SizedBox(
+                                width: size.width / 1.5,
+                                child: TextField(
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                  ),
+                                  decoration: InputDecoration(
+                                    hintText: "Search",
+                                    hintStyle: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Container(
+                                  padding: EdgeInsets.all(4),
+                                  decoration: BoxDecoration(
+                                    color: Color(0xff489BFE),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Icon(
+                                    Icons.search,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                    Spacer(),
-                    IconButton(
-                      onPressed: () {},
-                      icon: Container(
-                        padding: EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                          color: Color(0xff489BFE),
-                          borderRadius: BorderRadius.circular(20),
+                  ),
+                  Row(
+                    children: [
+                      Spacer(),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.filter_alt_outlined,
+                          color: Colors.white,
                         ),
-                        child: Icon(
-                          Icons.search,
-                          color: Colors.black,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+                      )
+                    ],
+                  )
+                ],
               ),
+              centerTitle: true,
+              backgroundColor: Colors.transparent,
             ),
-          ],
+            body: MasonryGridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 3,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              itemBuilder: (context, index) {
+                return Tile(
+                  index: index,
+                  extent: (index % 5 + 1) * 100,
+                );
+              },
+            ),
+            // This trailing comma makes auto-formatting nicer for build methods.
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.black,
       ),
-      body: MasonryGridView.count(
-        shrinkWrap: true,
-        crossAxisCount: 3,
-        mainAxisSpacing: 4,
-        crossAxisSpacing: 4,
-        itemBuilder: (context, index) {
-          return Tile(
-            index: index,
-            extent: (index % 5 + 1) * 100,
-          );
-        },
-      ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -137,20 +173,27 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = Container(
-      decoration: BoxDecoration(
-        color: backgroundColor ??
-            Colors.primaries[index % Colors.primaries.length],
-        borderRadius: BorderRadius.circular(10),
-      ),
-      height: extent,
-      child: Center(
-        child: CircleAvatar(
-          minRadius: 20,
-          maxRadius: 20,
-          backgroundColor: Colors.white,
-          foregroundColor: Colors.black,
-          child: Text('$index', style: const TextStyle(fontSize: 20)),
+    final child = ClipRect(
+      child: BackdropFilter(
+        filter: ui.ImageFilter.blur(
+          sigmaX: 6.0,
+          sigmaY: 6.0,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          height: extent,
+          child: Center(
+            child: CircleAvatar(
+              minRadius: 20,
+              maxRadius: 20,
+              backgroundColor: Colors.white,
+              foregroundColor: Colors.black,
+              child: Text('$index', style: const TextStyle(fontSize: 20)),
+            ),
+          ),
         ),
       ),
     );
