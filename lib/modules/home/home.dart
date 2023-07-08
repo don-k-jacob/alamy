@@ -8,8 +8,9 @@ import 'package:lottie/lottie.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key,});
-
+  const HomePage({
+    super.key,
+  });
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -62,20 +63,21 @@ class _HomePageState extends State<HomePage> {
             color: Colors.black.withOpacity(0.9),
           ),
           child: Scaffold(
+            extendBodyBehindAppBar: true,
             backgroundColor: Colors.transparent,
             appBar: AppBar(
-              toolbarHeight: 120,
+              toolbarHeight: 170,
               title: Column(
                 children: [
                   DefaultTextStyle(
                     style: const TextStyle(
-                      fontSize: 20.0,
+                      fontSize: 40.0,
                       color: Color(0xff6597CD),
+                      fontWeight: FontWeight.bold,
                     ),
                     child: AnimatedTextKit(
                       animatedTexts: [
                         WavyAnimatedText('Alamy!'),
-                        WavyAnimatedText('Find your perfect image!'),
                       ],
                       isRepeatingAnimation: true,
                       onTap: () {
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
                   //     )),
                   SizedBox(
                     width: size.width - 60,
-                    height: 55,
+                    height: 70,
                     child: ClipRect(
                       child: BackdropFilter(
                         filter: ui.ImageFilter.blur(
@@ -110,14 +112,35 @@ class _HomePageState extends State<HomePage> {
                                 width: 20,
                               ),
                               SizedBox(
-                                width: size.width / 1.5,
+                                width: size.width / 1.6,
                                 child: TextField(
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                   ),
                                   decoration: InputDecoration(
-                                    hintText: "Search",
+                                    label: SizedBox(
+                                      width: 250.0,
+                                      child: DefaultTextStyle(
+                                        style: const TextStyle(
+                                          fontSize: 15.0,
+                                        ),
+                                        child: AnimatedTextKit(
+                                          animatedTexts: [
+                                            TypewriterAnimatedText('Search'),
+                                            TypewriterAnimatedText(
+                                                'Find your perfect image!'),
+                                            TypewriterAnimatedText(
+                                                'Type anything!'),
+                                            TypewriterAnimatedText(
+                                                'Search for free!'),
+                                          ],
+                                          onTap: () {
+                                            print("Tap Event");
+                                          },
+                                        ),
+                                      ),
+                                    ),
                                     hintStyle: TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -139,6 +162,18 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                  Row(
+                    children: [
+                      Spacer(),
+                      IconButton(
+                        onPressed: () {},
+                        icon: Icon(
+                          Icons.filter_alt_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
               centerTitle: true,
