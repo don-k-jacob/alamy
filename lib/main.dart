@@ -36,38 +36,43 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        toolbarHeight: 120,
         title: Column(
           children: [
-            Text("Alamy!"),
+            Text("Alamy!",
+                style: TextStyle(
+                  color: Color(0xff6597CD),
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                )),
             SizedBox(
-              width: size.width - 20,
+              width: size.width - 60,
+              height: 50,
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
-                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xff1E1E1E),
+                  borderRadius: BorderRadius.circular(20),
                 ),
               ),
             ),
           ],
         ),
-        backgroundColor: Colors.transparent,
+        centerTitle: true,
+        backgroundColor: Colors.black,
       ),
-      body: Column(
-        children: [
-          MasonryGridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 3,
-            mainAxisSpacing: 4,
-            crossAxisSpacing: 4,
-            itemBuilder: (context, index) {
-              return Tile(
-                index: index,
-                extent: (index % 5 + 1) * 100,
-              );
-            },
-          ),
-        ],
+      body: MasonryGridView.count(
+        shrinkWrap: true,
+        crossAxisCount: 3,
+        mainAxisSpacing: 4,
+        crossAxisSpacing: 4,
+        itemBuilder: (context, index) {
+          return Tile(
+            index: index,
+            extent: (index % 5 + 1) * 100,
+          );
+        },
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
