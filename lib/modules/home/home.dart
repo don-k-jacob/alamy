@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
     if (keyword == null) {
       imagesModel = await fetchData();
-    }else{
+    } else {
       imagesModel = await fetchSearchData(keyword: keyword);
     }
     setState(() {});
@@ -83,6 +83,7 @@ class _HomePageState extends State<HomePage> {
                         WavyAnimatedText('Alamy!'),
                       ],
                       isRepeatingAnimation: true,
+                      repeatForever: true,
                       onTap: () {
                         print("Tap Event");
                       },
@@ -186,6 +187,7 @@ class _HomePageState extends State<HomePage> {
               backgroundColor: Colors.transparent,
             ),
             body: RefreshIndicator(
+              displacement: 200,
               onRefresh: () => getImages(),
               child: MasonryGridView.count(
                 shrinkWrap: true,
