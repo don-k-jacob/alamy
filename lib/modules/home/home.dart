@@ -30,7 +30,7 @@ List<String> images = [
 class _HomePageState extends State<HomePage> {
   List<ImageItem> imagesList = [];
   int page = 1;
-
+  bool isLoading = false;
   List<String> licenseType = [
     "Royalty Free",
     "Rights Managed",
@@ -42,24 +42,28 @@ class _HomePageState extends State<HomePage> {
     "Panoramic",
     "Square"
   ];
-  List<int> selectedOrientationTypes = [];
+  int? selectedOrientationTypes;
 
   TextEditingController searchController = TextEditingController();
   getImages({String? keyword}) async {
     imagesList = [];
+    isLoading = true;
     setState(() {});
     if ((keyword == null || keyword.isEmpty) &&
-        selectedLcenseType.isEmpty && selectedOrientationTypes.isEmpty) {
+        selectedLcenseType.isEmpty &&
+        selectedOrientationTypes == null) {
       imagesList = await fetchData();
     } else {
       imagesList = await fetchSearchData(
         keyword: keyword ?? "",
         page: page,
         lic: selectedLcenseType,
-        ot: selectedOrientationTypes,
+        ot: selectedOrientationTypes == null ? [] : [selectedOrientationTypes!],
       );
     }
     print(imagesList.length);
+    isLoading = false;
+
     setState(() {});
   }
 
@@ -339,18 +343,17 @@ class _HomePageState extends State<HomePage> {
                                                     children: [
                                                       SelectChip(
                                                           isSelected:
-                                                              selectedOrientationTypes
-                                                                  .contains(1),
+                                                              selectedOrientationTypes ==
+                                                                  1,
                                                           label:
                                                               orientationTypes[
                                                                   0],
                                                           onTap: () {
-                                                            selectedOrientationTypes
-                                                                    .contains(1)
-                                                                ? selectedOrientationTypes
-                                                                    .remove(1)
-                                                                : selectedOrientationTypes
-                                                                    .add(1);
+                                                            selectedOrientationTypes =
+                                                                selectedOrientationTypes ==
+                                                                        1
+                                                                    ? null
+                                                                    : 1;
 
                                                             getImages();
                                                             Navigator.pop(
@@ -358,18 +361,17 @@ class _HomePageState extends State<HomePage> {
                                                           }),
                                                       SelectChip(
                                                           isSelected:
-                                                              selectedOrientationTypes
-                                                                  .contains(2),
+                                                              selectedOrientationTypes ==
+                                                                  2,
                                                           label:
                                                               orientationTypes[
                                                                   1],
                                                           onTap: () {
-                                                            selectedOrientationTypes
-                                                                    .contains(2)
-                                                                ? selectedOrientationTypes
-                                                                    .remove(2)
-                                                                : selectedOrientationTypes
-                                                                    .add(2);
+                                                            selectedOrientationTypes =
+                                                                selectedOrientationTypes ==
+                                                                        2
+                                                                    ? null
+                                                                    : 2;
 
                                                             getImages(
                                                                 keyword:
@@ -396,18 +398,17 @@ class _HomePageState extends State<HomePage> {
                                                     children: [
                                                       SelectChip(
                                                           isSelected:
-                                                              selectedOrientationTypes
-                                                                  .contains(4),
+                                                              selectedOrientationTypes ==
+                                                                  4,
                                                           label:
                                                               orientationTypes[
                                                                   2],
                                                           onTap: () {
-                                                            selectedOrientationTypes
-                                                                    .contains(4)
-                                                                ? selectedOrientationTypes
-                                                                    .remove(4)
-                                                                : selectedOrientationTypes
-                                                                    .add(4);
+                                                            selectedOrientationTypes =
+                                                                selectedOrientationTypes ==
+                                                                        4
+                                                                    ? null
+                                                                    : 4;
 
                                                             getImages();
                                                             Navigator.pop(
@@ -415,18 +416,17 @@ class _HomePageState extends State<HomePage> {
                                                           }),
                                                       SelectChip(
                                                           isSelected:
-                                                              selectedOrientationTypes
-                                                                  .contains(8),
+                                                              selectedOrientationTypes ==
+                                                                  8,
                                                           label:
                                                               orientationTypes[
                                                                   3],
                                                           onTap: () {
-                                                            selectedOrientationTypes
-                                                                    .contains(8)
-                                                                ? selectedOrientationTypes
-                                                                    .remove(8)
-                                                                : selectedOrientationTypes
-                                                                    .add(8);
+                                                            selectedOrientationTypes =
+                                                                selectedOrientationTypes ==
+                                                                        8
+                                                                    ? null
+                                                                    : 8;
 
                                                             getImages(
                                                                 keyword:
@@ -475,15 +475,14 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 3,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
-                itemCount: imagesList.length,
+                itemCount: isLoading ? null : imagesList.length,
                 itemBuilder: (context, index) {
-                  return imagesList.isEmpty
+                  return isLoading
                       ? SizedBox(
                           child: Shimmer.fromColors(
                             baseColor: Colors.white.withOpacity(0.2),
                             highlightColor: Colors.transparent,
-                            child: Tile(
-                              img: imagesList[index].renditions.thumb.href,
+                            child: OldTile(
                               index: index,
                               extent: (index % 5 + 1) * 100,
                             ),
@@ -620,6 +619,56 @@ class Tile extends StatelessWidget {
       img,
       fit: BoxFit.contain,
     ));
+
+    if (bottomSpace == null) {
+      return child;
+    }
+
+    return Column(
+      children: [
+        Expanded(child: child),
+        Container(
+          height: bottomSpace,
+          color: Colors.green,
+        )
+      ],
+    );
+  }
+}
+
+class OldTile extends StatelessWidget {
+  const OldTile({
+    Key? key,
+    required this.index,
+    this.extent,
+    this.backgroundColor,
+    this.bottomSpace,
+  }) : super(key: key);
+
+  final int index;
+  final double? extent;
+  final double? bottomSpace;
+  final Color? backgroundColor;
+
+  @override
+  Widget build(BuildContext context) {
+    final child = Container(
+      decoration: BoxDecoration(
+        color: backgroundColor ??
+            Colors.primaries[index % Colors.primaries.length],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      height: extent,
+      child: Center(
+        child: CircleAvatar(
+          minRadius: 20,
+          maxRadius: 20,
+          backgroundColor: Colors.white,
+          foregroundColor: Colors.black,
+          child: Text('$index', style: const TextStyle(fontSize: 20)),
+        ),
+      ),
+    );
 
     if (bottomSpace == null) {
       return child;
