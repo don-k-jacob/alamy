@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
           setState(() {});
         } else if ("Royalty Free" == lebel) {
           print("Royalty Free");
-          selectedLcenseType.remove(2);
+          selectedLcenseType.remove(0);
           setState(() {});
         }
       },
@@ -427,16 +427,16 @@ class _HomePageState extends State<HomePage> {
                                                       SelectChip(
                                                           isSelected:
                                                               selectedOrientationTypes ==
-                                                                  2,
+                                                                  1,
                                                           label:
                                                               orientationTypes[
                                                                   1],
                                                           onTap: () {
                                                             selectedOrientationTypes =
                                                                 selectedOrientationTypes ==
-                                                                        2
+                                                                        1
                                                                     ? null
-                                                                    : 2;
+                                                                    : 1;
 
                                                             getImages(
                                                                 keyword:
@@ -534,116 +534,182 @@ class _HomePageState extends State<HomePage> {
             ),
             body: RefreshIndicator(
               displacement: 200,
-              onRefresh: () => getImages(),
-              child: MasonryGridView.count(
-                shrinkWrap: true,
-                crossAxisCount: 3,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                itemCount: isLoading ? null : imagesList.length,
-                itemBuilder: (context, index) {
-                  return isLoading
-                      ? SizedBox(
-                          child: Shimmer.fromColors(
-                            baseColor: Colors.white.withOpacity(0.2),
-                            highlightColor: Colors.transparent,
-                            child: OldTile(
-                              index: index,
-                              extent: (index % 5 + 1) * 100,
-                            ),
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    shadowColor: null,
-                                    backgroundColor: Colors.transparent,
-                                    content: Hero(
-                                      tag: images[index % images.length],
-                                      child: GlassEffect(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20.0),
-                                          child: Stack(
-                                            children: [
-                                              SizedBox(
-                                                width: size.width / 1.5,
-                                                height: size.height / 1.7,
-                                                child: Column(
+              onRefresh: () {
+                page++;
+                setState(() {});
+                return getImages();
+              },
+              child: !isLoading && imagesList.isEmpty
+                  ? EmptyState()
+                  : MasonryGridView.count(
+                      shrinkWrap: true,
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      itemCount: isLoading ? null : imagesList.length,
+                      itemBuilder: (context, index) {
+                        return isLoading
+                            ? ShimmerWidget(
+                                index: index,
+                              )
+                            : GestureDetector(
+                                onTap: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shadowColor: null,
+                                          backgroundColor: Colors.transparent,
+                                          content: Hero(
+                                            tag: images[index % images.length],
+                                            child: GlassEffect(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20.0),
+                                                child: Stack(
                                                   children: [
                                                     SizedBox(
-                                                      height: size.height / 2,
-                                                      child: Image.network(
-                                                        imagesList[index]
-                                                            .renditions
-                                                            .comp
-                                                            .href,
-                                                        fit: BoxFit.cover,
+                                                      width: size.width / 1.5,
+                                                      height: size.height / 1.7,
+                                                      child: Column(
+                                                        children: [
+                                                          SizedBox(
+                                                            height:
+                                                                size.height / 2,
+                                                            child:
+                                                                Image.network(
+                                                              imagesList[index]
+                                                                  .renditions
+                                                                  .comp
+                                                                  .href,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: 20,
+                                                          ),
+                                                          SizedBox(
+                                                            width: size.width /
+                                                                1.5,
+                                                            child: Text(
+                                                              imagesList[index]
+                                                                  .caption,
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 15,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
                                                       ),
                                                     ),
-                                                    SizedBox(
-                                                      height: 20,
-                                                    ),
-                                                    SizedBox(
-                                                      width: size.width / 1.5,
-                                                      child: Text(
-                                                        imagesList[index]
-                                                            .caption,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.bold,
+                                                    Positioned(
+                                                      right: 0,
+                                                      child: IconButton(
+                                                        onPressed: () {},
+                                                        icon: GlassEffect(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Lottie.asset(
+                                                                'assets/91134-download.json',
+                                                                height: 20,
+                                                                width: 20,
+                                                                fit: BoxFit
+                                                                    .cover),
+                                                          ),
+                                                          isOval: true,
                                                         ),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              Positioned(
-                                                right: 0,
-                                                child: IconButton(
-                                                  onPressed: () {},
-                                                  icon: GlassEffect(
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Lottie.asset(
-                                                          'assets/91134-download.json',
-                                                          height: 20,
-                                                          width: 20,
-                                                          fit: BoxFit.cover),
-                                                    ),
-                                                    isOval: true,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                });
-                          },
-                          child: Hero(
-                            tag: imagesList[index].renditions.thumb.href,
-                            child: Tile(
-                              index: index,
-                              img: imagesList[index].renditions.thumb.href,
-                              extent: (index % 5 + 2) * 100,
-                            ),
-                          ),
-                        );
-                },
-              ),
+                                        );
+                                      });
+                                },
+                                child: Hero(
+                                  tag: imagesList[index].renditions.thumb.href,
+                                  child: Tile(
+                                    index: index,
+                                    img:
+                                        imagesList[index].renditions.thumb.href,
+                                    extent: (index % 5 + 2) * 100,
+                                  ),
+                                ),
+                              );
+                      },
+                    ),
             ),
             // This trailing comma makes auto-formatting nicer for build methods.
           ),
         ),
+      ),
+    );
+  }
+}
+
+class ShimmerWidget extends StatelessWidget {
+  const ShimmerWidget({
+    super.key,
+    required this.index,
+  });
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      child: Shimmer.fromColors(
+        baseColor: Colors.white.withOpacity(0.2),
+        highlightColor: Colors.transparent,
+        child: OldTile(
+          index: index,
+          extent: (index % 5 + 1) * 100,
+        ),
+      ),
+    );
+  }
+}
+
+class EmptyState extends StatelessWidget {
+  const EmptyState({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          LottieBuilder.asset("assets/123841-empty-state-ghost.json"),
+          Text(
+            "No Images Found",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 30,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text(
+            "Try changing the filters",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 15,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

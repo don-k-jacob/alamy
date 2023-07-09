@@ -33,7 +33,7 @@ Future<List<ImageItem>> fetchSearchData({
     "filters": {
       "lic": lic,
       "ot": ot,
-      "pgs": page * 50,
+      "pgs": page * 200,
     }
   });
 
