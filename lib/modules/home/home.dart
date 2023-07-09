@@ -218,11 +218,12 @@ class _HomePageState extends State<HomePage> {
                                       child: Lottie.asset(
                                           'assets/52102-searching.json'))
                                   : Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: DecoratedBox(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: DecoratedBox(
                                         decoration: BoxDecoration(
                                           color: Colors.blue,
-                                          borderRadius: BorderRadius.circular(20),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
                                         ),
                                         child: Padding(
                                           padding: EdgeInsets.all(5),
@@ -232,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                                           ),
                                         ),
                                       ),
-                                  ),
+                                    ),
                             )
                           ],
                         ),
@@ -567,12 +568,39 @@ class _HomePageState extends State<HomePage> {
                                           padding: const EdgeInsets.all(20.0),
                                           child: Stack(
                                             children: [
-                                              Image.network(
-                                                imagesList[index]
-                                                    .renditions
-                                                    .thumb
-                                                    .href,
-                                                fit: BoxFit.cover,
+                                              SizedBox(
+                                                width: size.width / 1.5,
+                                                height: size.height / 1.7,
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(
+                                                      height: size.height / 2,
+                                                      child: Image.network(
+                                                        imagesList[index]
+                                                            .renditions
+                                                            .comp
+                                                            .href,
+                                                        fit: BoxFit.cover,
+                                                      ),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 20,
+                                                    ),
+                                                    SizedBox(
+                                                      width: size.width / 1.5,
+                                                      child: Text(
+                                                        imagesList[index]
+                                                            .caption,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                               Positioned(
                                                 right: 0,
