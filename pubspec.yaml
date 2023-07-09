@@ -50,6 +50,13 @@ dev_dependencies:
   shimmer:
   lottie: ^2.4.0
   animated_text_kit: ^4.2.2
+  flutter_launcher_icons:
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/alamy.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
