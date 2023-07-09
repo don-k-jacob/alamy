@@ -97,84 +97,88 @@ class _HomePageState extends State<HomePage> {
                   //       fontWeight: FontWeight.bold,
                   //     )),
                   SizedBox(
-                    width: size.width - 60,
-                    height: 70,
-                    child: ClipRect(
-                      child: BackdropFilter(
-                        filter: ui.ImageFilter.blur(
-                          sigmaX: 6.0,
-                          sigmaY: 6.0,
-                        ),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            // color: Color(0xff1E1E1E),
-                            color: Colors.white.withOpacity(0.2),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Row(
-                            children: [
-                              SizedBox(
-                                width: 20,
-                              ),
-                              SizedBox(
-                                width: size.width / 1.6,
-                                child: TextField(
-                                  style: TextStyle(
+                      width: size.width - 60,
+                      height: 70,
+                      child: GlassEffect(
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            SizedBox(
+                              width: size.width / 1.6,
+                              child: TextField(
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                ),
+                                controller: searchController,
+                                decoration: InputDecoration(
+                                  label: SizedBox(
+                                    width: 250.0,
+                                    child: DefaultTextStyle(
+                                      style: const TextStyle(
+                                        fontSize: 15.0,
+                                      ),
+                                      child: AnimatedTextKit(
+                                        animatedTexts: [
+                                          TypewriterAnimatedText('Search'),
+                                          TypewriterAnimatedText(
+                                              'Find your perfect image!'),
+                                          TypewriterAnimatedText(
+                                              'Type anything!'),
+                                          TypewriterAnimatedText(
+                                              'Search for free!'),
+                                        ],
+                                        onTap: () {
+                                          print("Tap Event");
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  hintStyle: TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                   ),
-                                  controller: searchController,
-                                  decoration: InputDecoration(
-                                    label: SizedBox(
-                                      width: 250.0,
-                                      child: DefaultTextStyle(
-                                        style: const TextStyle(
-                                          fontSize: 15.0,
-                                        ),
-                                        child: AnimatedTextKit(
-                                          animatedTexts: [
-                                            TypewriterAnimatedText('Search'),
-                                            TypewriterAnimatedText(
-                                                'Find your perfect image!'),
-                                            TypewriterAnimatedText(
-                                                'Type anything!'),
-                                            TypewriterAnimatedText(
-                                                'Search for free!'),
-                                          ],
-                                          onTap: () {
-                                            print("Tap Event");
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    hintStyle: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                    ),
-                                    border: InputBorder.none,
-                                  ),
+                                  border: InputBorder.none,
                                 ),
                               ),
-                              Spacer(),
-                              IconButton(
-                                onPressed: () {
-                                  getImages();
-                                },
-                                icon: SizedBox(
-                                    child: Lottie.asset(
-                                        'assets/52102-searching.json')),
-                              )
-                            ],
-                          ),
+                            ),
+                            Spacer(),
+                            IconButton(
+                              onPressed: () {
+                                getImages();
+                              },
+                              icon: SizedBox(
+                                  child: Lottie.asset(
+                                      'assets/52102-searching.json')),
+                            )
+                          ],
                         ),
-                      ),
-                    ),
-                  ),
+                      )),
                   Row(
                     children: [
                       Spacer(),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          showModalBottomSheet(
+                            barrierColor: Colors.transparent,
+                            backgroundColor: Colors.transparent,
+                            context: context,
+                            builder: (context) {
+                              return Container(
+                                height: 200,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.3),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                    topRight: Radius.circular(20),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
                         icon: Icon(
                           Icons.filter_alt_outlined,
                           color: Colors.white,
@@ -217,75 +221,52 @@ class _HomePageState extends State<HomePage> {
                                     backgroundColor: Colors.transparent,
                                     content: Hero(
                                       tag: images[index % images.length],
-                                      child: SizedBox(
-                                        child: ClipRect(
-                                          child: BackdropFilter(
-                                            filter: ui.ImageFilter.blur(
-                                              sigmaX: 6.0,
-                                              sigmaY: 6.0,
-                                            ),
-                                            child: DecoratedBox(
-                                              decoration: BoxDecoration(
-                                                color: Colors.white
-                                                    .withOpacity(0.2),
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
+                                      child: GlassEffect(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20.0),
+                                          child: Stack(
+                                            children: [
+                                              Image.network(
+                                                images[index % images.length],
+                                                fit: BoxFit.cover,
                                               ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(20.0),
-                                                child: Stack(
-                                                  children: [
-                                                    Image.network(
-                                                      images[index %
-                                                          images.length],
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                    Positioned(
-                                                      right: 0,
-                                                      child: IconButton(
-                                                        onPressed: () {},
-                                                        icon: ClipOval(
-                                                          child: BackdropFilter(
-                                                            filter:
-                                                                ui.ImageFilter
-                                                                    .blur(
-                                                              sigmaX: 6.0,
-                                                              sigmaY: 6.0,
-                                                            ),
-                                                            child: DecoratedBox(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Colors
-                                                                    .black
-                                                                    .withOpacity(
-                                                                        0.2),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            20),
-                                                              ),
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        8.0),
-                                                                child: Lottie.asset(
-                                                                    'assets/91134-download.json',
-                                                                    height: 20,
-                                                                    width: 20,
-                                                                    fit: BoxFit
-                                                                        .cover),
-                                                              ),
-                                                            ),
-                                                          ),
+                                              Positioned(
+                                                right: 0,
+                                                child: IconButton(
+                                                  onPressed: () {},
+                                                  icon: ClipOval(
+                                                    child: BackdropFilter(
+                                                      filter:
+                                                          ui.ImageFilter.blur(
+                                                        sigmaX: 6.0,
+                                                        sigmaY: 6.0,
+                                                      ),
+                                                      child: DecoratedBox(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black
+                                                              .withOpacity(0.2),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(20),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Lottie.asset(
+                                                              'assets/91134-download.json',
+                                                              height: 20,
+                                                              width: 20,
+                                                              fit:
+                                                                  BoxFit.cover),
                                                         ),
                                                       ),
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -328,29 +309,11 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final child = ClipRect(
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(
-          sigmaX: 6.0,
-          sigmaY: 6.0,
-        ),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(10),
-            // image: DecorationImage(
-            //   image: NetworkImage(images[index % images.length]),
-            //   fit: BoxFit.cover,
-            // ),
-          ),
-          // height: extent,
-          child: Image.network(
-            images[index % images.length],
-            fit: BoxFit.contain,
-          ),
-        ),
-      ),
-    );
+    final child = GlassEffect(
+        child: Image.network(
+      images[index % images.length],
+      fit: BoxFit.contain,
+    ));
 
     if (bottomSpace == null) {
       return child;
@@ -364,6 +327,30 @@ class Tile extends StatelessWidget {
           color: Colors.green,
         )
       ],
+    );
+  }
+}
+
+class GlassEffect extends StatelessWidget {
+  const GlassEffect({super.key, required this.child});
+  final Widget child;
+  @override
+  Widget build(BuildContext context) {
+    return ClipRect(
+      child: BackdropFilter(
+        filter: ui.ImageFilter.blur(
+          sigmaX: 6.0,
+          sigmaY: 6.0,
+        ),
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+            // color: Color(0xff1E1E1E),
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: child,
+        ),
+      ),
     );
   }
 }
