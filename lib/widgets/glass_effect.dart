@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 class GlassEffect extends StatelessWidget {
-  const GlassEffect({super.key, required this.child, this.isOval = false});
+  const GlassEffect(
+      {super.key,
+      required this.child,
+      this.isOval = false,
+      this.color = Colors.white});
   final Widget child;
   final bool isOval;
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return isOval
@@ -17,7 +22,7 @@ class GlassEffect extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   // color: Color(0xff1E1E1E),
-                  color: Colors.white.withOpacity(0.2),
+                  color: color.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: child,
@@ -33,7 +38,7 @@ class GlassEffect extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   // color: Color(0xff1E1E1E),
-                  color: Colors.white.withOpacity(0.2),
+                  color: color.withOpacity(0.2),
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: child,

@@ -30,14 +30,35 @@ List<String> images = [
 class _HomePageState extends State<HomePage> {
   List<ImageList> imagesList = [];
   int page = 1;
+
+  List<String> licenseType = [
+    "Royalty Free",
+    "Rights Managed",
+  ];
+  List<int> selectedLcenseType = [];
+  List<String> orientationTypes = [
+    "Landscape",
+    "Portrait",
+    "Panoramic",
+    "Square"
+  ];
+  List<int> selectedOrientationTypes = [];
+
   TextEditingController searchController = TextEditingController();
   getImages({String? keyword}) async {
     imagesList = [];
     setState(() {});
-    if (keyword == null) {
+    if (keyword == null &&
+        selectedLcenseType.isEmpty &&
+        selectedOrientationTypes.isEmpty) {
       imagesList = await fetchData();
     } else {
-      imagesList = await fetchSearchData(keyword: keyword);
+      imagesList = await fetchSearchData(
+        keyword: keyword ?? "",
+        page: page,
+        lic: selectedLcenseType,
+        ot: selectedOrientationTypes,
+      );
     }
     print(imagesList.length);
     setState(() {});
@@ -166,22 +187,276 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: Colors.transparent,
                             context: context,
                             builder: (context) {
-                              return Container(
-                                height: 200,
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.3),
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
+                              return GlassEffect(
+                                child: Container(
+                                  height: 600,
+                                  decoration: const BoxDecoration(
+                                    // color: Colors.white.withOpacity(0.3),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
                                   ),
+                                  child: Column(children: [
+                                    Row(
+                                      children: [
+                                        Spacer(),
+                                        IconButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          icon: const GlassEffect(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Icon(
+                                                Icons.close,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: GlassEffect(
+                                        color: Colors.black,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4, vertical: 25),
+                                          child: SizedBox(
+                                            width: size.width,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "License Type",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                SizedBox(
+                                                  width: size.width,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SelectChip(
+                                                          isSelected:
+                                                              selectedLcenseType
+                                                                  .contains(1),
+                                                          label: licenseType[0],
+                                                          onTap: () {
+                                                            selectedLcenseType
+                                                                    .contains(1)
+                                                                ? selectedLcenseType
+                                                                    .remove(1)
+                                                                : selectedLcenseType
+                                                                    .add(1);
+
+                                                            getImages();
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                      SelectChip(
+                                                          isSelected:
+                                                              selectedLcenseType
+                                                                  .contains(2),
+                                                          label: licenseType[1],
+                                                          onTap: () {
+                                                            selectedLcenseType
+                                                                    .contains(2)
+                                                                ? selectedLcenseType
+                                                                    .remove(2)
+                                                                : selectedLcenseType
+                                                                    .add(2);
+
+                                                            getImages(
+                                                                keyword:
+                                                                    licenseType[
+                                                                        1]);
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                    ],
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15),
+                                      child: GlassEffect(
+                                        color: Colors.black,
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 4, vertical: 25),
+                                          child: SizedBox(
+                                            width: size.width,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  "Orientation Types",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 25,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 20,
+                                                ),
+                                                SizedBox(
+                                                  width: size.width,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SelectChip(
+                                                          isSelected:
+                                                              selectedOrientationTypes
+                                                                  .contains(1),
+                                                          label:
+                                                              orientationTypes[
+                                                                  0],
+                                                          onTap: () {
+                                                            selectedOrientationTypes
+                                                                    .contains(1)
+                                                                ? selectedOrientationTypes
+                                                                    .remove(1)
+                                                                : selectedOrientationTypes
+                                                                    .add(1);
+
+                                                            getImages();
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                      SelectChip(
+                                                          isSelected:
+                                                              selectedOrientationTypes
+                                                                  .contains(2),
+                                                          label:
+                                                              orientationTypes[
+                                                                  1],
+                                                          onTap: () {
+                                                            selectedOrientationTypes
+                                                                    .contains(2)
+                                                                ? selectedOrientationTypes
+                                                                    .remove(2)
+                                                                : selectedOrientationTypes
+                                                                    .add(2);
+
+                                                            getImages(
+                                                                keyword:
+                                                                    orientationTypes[
+                                                                        1]);
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                SizedBox(
+                                                  width: size.width,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      SelectChip(
+                                                          isSelected:
+                                                              selectedOrientationTypes
+                                                                  .contains(4),
+                                                          label:
+                                                              orientationTypes[
+                                                                  2],
+                                                          onTap: () {
+                                                            selectedOrientationTypes
+                                                                    .contains(4)
+                                                                ? selectedOrientationTypes
+                                                                    .remove(4)
+                                                                : selectedOrientationTypes
+                                                                    .add(4);
+
+                                                            getImages();
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                      SelectChip(
+                                                          isSelected:
+                                                              selectedOrientationTypes
+                                                                  .contains(8),
+                                                          label:
+                                                              orientationTypes[
+                                                                  3],
+                                                          onTap: () {
+                                                            selectedOrientationTypes
+                                                                    .contains(8)
+                                                                ? selectedOrientationTypes
+                                                                    .remove(8)
+                                                                : selectedOrientationTypes
+                                                                    .add(8);
+
+                                                            getImages(
+                                                                keyword:
+                                                                    orientationTypes[
+                                                                        3]);
+                                                            Navigator.pop(
+                                                                context);
+                                                          }),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
                                 ),
                               );
                             },
                           );
                         },
-                        icon: Icon(
-                          Icons.filter_alt_outlined,
-                          color: Colors.white,
+                        icon: const GlassEffect(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.filter_alt_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -269,6 +544,46 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             // This trailing comma makes auto-formatting nicer for build methods.
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SelectChip extends StatelessWidget {
+  const SelectChip(
+      {super.key,
+      required this.label,
+      required this.onTap,
+      required this.isSelected,
+      this.width,
+      this.height});
+  final String label;
+  final bool isSelected;
+  final Function onTap;
+  final double? width;
+  final double? height;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: height,
+      child: GestureDetector(
+        onTap: () {
+          onTap();
+        },
+        child: GlassEffect(
+          color: isSelected ? Colors.blue : Colors.grey,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+            child: Text(
+              label,
+              style: TextStyle(
+                color: isSelected ? Colors.blue : Colors.white,
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),

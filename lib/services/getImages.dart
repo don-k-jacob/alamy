@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:alamy/models/searchModel.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<List<ImageList>> fetchData() async {
@@ -20,15 +21,20 @@ Future<List<ImageList>> fetchData() async {
   }
 }
 
-Future<List<ImageList>> fetchSearchData({required String keyword}) async {
+Future<List<ImageList>> fetchSearchData({
+  required String keyword,
+  required List<int> lic,
+  required List<int> ot,
+  int page = 1,
+}) async {
   final url = Uri.parse('https://silly-teal-cockatoo.cyclic.app/search');
 
   final payload = json.encode({
     "query": keyword,
     "filters": {
-      "lic": [1],
-      "ot": [0, 1],
-      "pgs": 1
+      "lic": lic,
+      "ot": ot,
+      "pgs": page,
     }
   });
 
