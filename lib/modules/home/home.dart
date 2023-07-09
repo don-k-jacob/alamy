@@ -28,17 +28,18 @@ List<String> images = [
 ];
 
 class _HomePageState extends State<HomePage> {
-  ImagesModel? imagesModel;
+  List<ImageList> imagesList = [];
   int page = 1;
   TextEditingController searchController = TextEditingController();
   getImages({String? keyword}) async {
-    imagesModel = null;
+    imagesList = [];
     setState(() {});
     if (keyword == null) {
-      imagesModel = await fetchData();
+      imagesList = await fetchData();
     } else {
-      imagesModel = await fetchSearchData(keyword: keyword);
+      imagesList = await fetchSearchData(keyword: keyword);
     }
+    print(imagesList.length);
     setState(() {});
   }
 
@@ -195,7 +196,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
                 itemBuilder: (context, index) {
-                  return imagesModel == null
+                  return imagesList.isEmpty
                       ? SizedBox(
                           child: Shimmer.fromColors(
                             baseColor: Colors.white.withOpacity(0.2),
@@ -296,7 +297,7 @@ class _HomePageState extends State<HomePage> {
                             tag: images[index % images.length],
                             child: Tile(
                               index: index,
-                              extent: (index % 5 + 1) * 100,
+                              extent: (index % 5 + 2) * 100,
                             ),
                           ),
                         );
@@ -337,21 +338,16 @@ class Tile extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.white.withOpacity(0.2),
             borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              image: NetworkImage(images[index % images.length]),
-              fit: BoxFit.cover,
-            ),
+            // image: DecorationImage(
+            //   image: NetworkImage(images[index % images.length]),
+            //   fit: BoxFit.cover,
+            // ),
           ),
-          height: extent,
-          // child: Center(
-          //   child: CircleAvatar(
-          //     minRadius: 20,
-          //     maxRadius: 20,
-          //     backgroundColor: Colors.white,
-          //     foregroundColor: Colors.black,
-          //     child: Text('$index', style: const TextStyle(fontSize: 20)),
-          //   ),
-          // ),
+          // height: extent,
+          child: Image.network(
+            images[index % images.length],
+            fit: BoxFit.contain,
+          ),
         ),
       ),
     );

@@ -4,19 +4,21 @@
 
 import 'dart:convert';
 
-ImagesModel imagesModelFromJson(String str) =>
-    ImagesModel.fromJson(json.decode(str));
+ImagesDataModel ImagesDataModelFromJson(String str) =>
+    ImagesDataModel.fromJson(json.decode(str));
 
-String imagesModelToJson(ImagesModel data) => json.encode(data.toJson());
+String ImagesDataModelToJson(ImagesDataModel data) =>
+    json.encode(data.toJson());
 
-class ImagesModel {
+class ImagesDataModel {
   final Images images;
 
-  ImagesModel({
+  ImagesDataModel({
     required this.images,
   });
 
-  factory ImagesModel.fromJson(Map<String, dynamic> json) => ImagesModel(
+  factory ImagesDataModel.fromJson(Map<String, dynamic> json) =>
+      ImagesDataModel(
         images: Images.fromJson(json["IMAGES"]),
       );
 
@@ -26,8 +28,8 @@ class ImagesModel {
 }
 
 class Images {
-  final List<I> i;
-  final List<ResultElement> results;
+  final List<ImageList> i;
+  final List<Results> results;
 
   Images({
     required this.i,
@@ -35,9 +37,9 @@ class Images {
   });
 
   factory Images.fromJson(Map<String, dynamic> json) => Images(
-        i: List<I>.from(json["I"].map((x) => I.fromJson(x))),
-        results: List<ResultElement>.from(
-            json["RESULTS"].map((x) => ResultElement.fromJson(x))),
+        i: List<ImageList>.from(json["I"].map((x) => ImageList.fromJson(x))),
+        results:
+            List<Results>.from(json["RESULTS"].map((x) => Results.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -46,14 +48,14 @@ class Images {
       };
 }
 
-class I {
+class ImageList {
   final IClass empty;
 
-  I({
+  ImageList({
     required this.empty,
   });
 
-  factory I.fromJson(Map<String, dynamic> json) => I(
+  factory ImageList.fromJson(Map<String, dynamic> json) => ImageList(
         empty: IClass.fromJson(json["\u0024"]),
       );
 
@@ -158,14 +160,14 @@ class IClass {
       };
 }
 
-class ResultElement {
+class Results {
   final Result empty;
 
-  ResultElement({
+  Results({
     required this.empty,
   });
 
-  factory ResultElement.fromJson(Map<String, dynamic> json) => ResultElement(
+  factory Results.fromJson(Map<String, dynamic> json) => Results(
         empty: Result.fromJson(json["\u0024"]),
       );
 

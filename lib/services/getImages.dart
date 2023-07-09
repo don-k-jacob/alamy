@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:alamy/models/searchModel.dart';
 import 'package:http/http.dart' as http;
 
-Future<ImagesModel> fetchData() async {
+Future<List<ImageList>> fetchData() async {
   var url = Uri.parse('https://silly-teal-cockatoo.cyclic.app/get-all');
 
   var response = await http.get(url);
@@ -12,20 +12,15 @@ Future<ImagesModel> fetchData() async {
     // Request successful
     var responseBody = response.body;
     print(responseBody);
-    return imagesModelFromJson(responseBody);
+    return ImagesDataModelFromJson(responseBody).images.i.toList();
   } else {
     // Request failed
     print('Error: ${response.statusCode}');
-    return ImagesModel(
-      images: Images(
-        i: [],
-        results: [],
-      ),
-    );
+    return [];
   }
 }
 
-Future<ImagesModel> fetchSearchData({required String keyword}) async {
+Future<List<ImageList>> fetchSearchData({required String keyword}) async {
   final url = Uri.parse('https://silly-teal-cockatoo.cyclic.app/search');
 
   final payload = json.encode({
@@ -48,23 +43,13 @@ Future<ImagesModel> fetchSearchData({required String keyword}) async {
       final jsonResponse = json.decode(response.body);
       // Process the response data as needed
       print(jsonResponse);
-      return imagesModelFromJson(jsonResponse);
+      return ImagesDataModelFromJson(jsonResponse).images.i.toList();
     } else {
       print('Request failed with status: ${response.statusCode}');
-      return ImagesModel(
-        images: Images(
-          i: [],
-          results: [],
-        ),
-      );
+      return [];
     }
   } catch (error) {
     print('Request failed with error: $error');
-    return ImagesModel(
-      images: Images(
-        i: [],
-        results: [],
-      ),
-    );
+    return [];
   }
 }
