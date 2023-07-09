@@ -1,8 +1,8 @@
 import 'package:alamy/models/searchModel.dart';
 import 'package:alamy/services/getImages.dart';
+import 'package:alamy/widgets/glass_effect.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'dart:ui' as ui;
 import 'package:shimmer/shimmer.dart';
 import 'package:lottie/lottie.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -234,35 +234,18 @@ class _HomePageState extends State<HomePage> {
                                                 right: 0,
                                                 child: IconButton(
                                                   onPressed: () {},
-                                                  icon: ClipOval(
-                                                    child: BackdropFilter(
-                                                      filter:
-                                                          ui.ImageFilter.blur(
-                                                        sigmaX: 6.0,
-                                                        sigmaY: 6.0,
-                                                      ),
-                                                      child: DecoratedBox(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Colors.black
-                                                              .withOpacity(0.2),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Lottie.asset(
-                                                              'assets/91134-download.json',
-                                                              height: 20,
-                                                              width: 20,
-                                                              fit:
-                                                                  BoxFit.cover),
-                                                        ),
-                                                      ),
+                                                  icon: GlassEffect(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Lottie.asset(
+                                                          'assets/91134-download.json',
+                                                          height: 20,
+                                                          width: 20,
+                                                          fit: BoxFit.cover),
                                                     ),
+                                                    isOval: true,
                                                   ),
                                                 ),
                                               ),
@@ -327,30 +310,6 @@ class Tile extends StatelessWidget {
           color: Colors.green,
         )
       ],
-    );
-  }
-}
-
-class GlassEffect extends StatelessWidget {
-  const GlassEffect({super.key, required this.child});
-  final Widget child;
-  @override
-  Widget build(BuildContext context) {
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ui.ImageFilter.blur(
-          sigmaX: 6.0,
-          sigmaY: 6.0,
-        ),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            // color: Color(0xff1E1E1E),
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: child,
-        ),
-      ),
     );
   }
 }
