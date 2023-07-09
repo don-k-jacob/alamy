@@ -26,6 +26,7 @@ List<String> images = [
   "https://images.unsplash.com/photo-1688777147321-668bd72f4f96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0OHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
   "https://images.unsplash.com/photo-1688736009784-9d3cb2b3dedd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0OXx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
 ];
+List<int> selectedLcenseType = [];
 
 class _HomePageState extends State<HomePage> {
   List<ImageItem> imagesList = [];
@@ -35,7 +36,6 @@ class _HomePageState extends State<HomePage> {
     "Royalty Free",
     "Rights Managed",
   ];
-  List<int> selectedLcenseType = [];
   List<String> orientationTypes = [
     "Landscape",
     "Portrait",
@@ -71,6 +71,44 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getImages();
+  }
+
+  chipList({
+    required List<String?> items,
+  }) {
+    List<Widget> chips = items.map((sport) => _buildChip(sport!)).toList();
+
+    return Wrap(
+      spacing: 6.0,
+      runSpacing: 6.0,
+      children: chips,
+    );
+  }
+
+  Widget _buildChip(String lebel) {
+    return Chip(
+      labelPadding: EdgeInsets.all(2.0),
+      deleteIcon: Icon(Icons.cancel),
+      onDeleted: () {
+        if ("Ridhts Managed" == lebel) {
+          print("Ridhts Managed");
+          selectedLcenseType.remove(1);
+          setState(() {});
+        } else if ("Royalty Free" == lebel) {
+          print("Royalty Free");
+          selectedLcenseType.remove(2);
+          setState(() {});
+        }
+      },
+      label: Text('$lebel',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 12.0,
+          )),
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.grey[60],
+      padding: EdgeInsets.all(8.0),
+    );
   }
 
   @override
@@ -175,15 +213,38 @@ class _HomePageState extends State<HomePage> {
                                   keyword: searchController.text,
                                 );
                               },
-                              icon: SizedBox(
-                                  child: Lottie.asset(
-                                      'assets/52102-searching.json')),
+                              icon: isLoading
+                                  ? SizedBox(
+                                      child: Lottie.asset(
+                                          'assets/52102-searching.json'))
+                                  : Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: DecoratedBox(
+                                        decoration: BoxDecoration(
+                                          color: Colors.blue,
+                                          borderRadius: BorderRadius.circular(20),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(5),
+                                          child: Icon(
+                                            Icons.search,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                  ),
                             )
                           ],
                         ),
                       )),
                   Row(
                     children: [
+                      chipList(
+                          items: selectedLcenseType.firstOrNull == null
+                              ? []
+                              : selectedLcenseType
+                                  .map((e) => licenseType[e - 1])
+                                  .toList()),
                       Spacer(),
                       IconButton(
                         onPressed: () {
@@ -205,6 +266,9 @@ class _HomePageState extends State<HomePage> {
                                   child: Column(children: [
                                     Row(
                                       children: [
+                                        SizedBox(
+                                          width: 20,
+                                        ),
                                         Spacer(),
                                         IconButton(
                                           onPressed: () {
