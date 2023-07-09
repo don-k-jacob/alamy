@@ -28,7 +28,7 @@ List<String> images = [
 ];
 
 class _HomePageState extends State<HomePage> {
-  List<ImageList> imagesList = [];
+  List<ImageItem> imagesList = [];
   int page = 1;
 
   List<String> licenseType = [
@@ -48,9 +48,8 @@ class _HomePageState extends State<HomePage> {
   getImages({String? keyword}) async {
     imagesList = [];
     setState(() {});
-    if (keyword == null &&
-        selectedLcenseType.isEmpty &&
-        selectedOrientationTypes.isEmpty) {
+    if ((keyword == null || keyword.isEmpty) &&
+        selectedLcenseType.isEmpty && selectedOrientationTypes.isEmpty) {
       imagesList = await fetchData();
     } else {
       imagesList = await fetchSearchData(
@@ -168,7 +167,9 @@ class _HomePageState extends State<HomePage> {
                             Spacer(),
                             IconButton(
                               onPressed: () {
-                                getImages();
+                                getImages(
+                                  keyword: searchController.text,
+                                );
                               },
                               icon: SizedBox(
                                   child: Lottie.asset(
@@ -474,6 +475,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisCount: 3,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
+                itemCount: imagesList.length,
                 itemBuilder: (context, index) {
                   return imagesList.isEmpty
                       ? SizedBox(
@@ -481,6 +483,7 @@ class _HomePageState extends State<HomePage> {
                             baseColor: Colors.white.withOpacity(0.2),
                             highlightColor: Colors.transparent,
                             child: Tile(
+                              img: imagesList[index].renditions.thumb.href,
                               index: index,
                               extent: (index % 5 + 1) * 100,
                             ),
@@ -502,7 +505,10 @@ class _HomePageState extends State<HomePage> {
                                           child: Stack(
                                             children: [
                                               Image.network(
-                                                images[index % images.length],
+                                                imagesList[index]
+                                                    .renditions
+                                                    .thumb
+                                                    .href,
                                                 fit: BoxFit.cover,
                                               ),
                                               Positioned(
@@ -533,9 +539,10 @@ class _HomePageState extends State<HomePage> {
                                 });
                           },
                           child: Hero(
-                            tag: images[index % images.length],
+                            tag: imagesList[index].renditions.thumb.href,
                             child: Tile(
                               index: index,
+                              img: imagesList[index].renditions.thumb.href,
                               extent: (index % 5 + 2) * 100,
                             ),
                           ),
@@ -597,9 +604,10 @@ class Tile extends StatelessWidget {
     required this.index,
     this.extent,
     this.backgroundColor,
+    this.img = '',
     this.bottomSpace,
   }) : super(key: key);
-
+  final String img;
   final int index;
   final double? extent;
   final double? bottomSpace;
@@ -609,7 +617,7 @@ class Tile extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = GlassEffect(
         child: Image.network(
-      images[index % images.length],
+      img,
       fit: BoxFit.contain,
     ));
 

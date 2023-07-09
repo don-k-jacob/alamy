@@ -1,10 +1,9 @@
 import 'dart:convert';
 
 import 'package:alamy/models/searchModel.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-Future<List<ImageList>> fetchData() async {
+Future<List<ImageItem>> fetchData() async {
   var url = Uri.parse('https://silly-teal-cockatoo.cyclic.app/get-all');
 
   var response = await http.get(url);
@@ -13,7 +12,7 @@ Future<List<ImageList>> fetchData() async {
     // Request successful
     var responseBody = response.body;
     print(responseBody);
-    return ImagesDataModelFromJson(responseBody).images.i.toList();
+    return imageModelFromJson(responseBody).items.toList();
   } else {
     // Request failed
     print('Error: ${response.statusCode}');
@@ -21,7 +20,7 @@ Future<List<ImageList>> fetchData() async {
   }
 }
 
-Future<List<ImageList>> fetchSearchData({
+Future<List<ImageItem>> fetchSearchData({
   required String keyword,
   required List<int> lic,
   required List<int> ot,
@@ -34,7 +33,7 @@ Future<List<ImageList>> fetchSearchData({
     "filters": {
       "lic": lic,
       "ot": ot,
-      "pgs": page,
+      "pgs": page * 50,
     }
   });
 
@@ -46,10 +45,11 @@ Future<List<ImageList>> fetchSearchData({
     final response = await http.post(url, headers: headers, body: payload);
 
     if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
+      final jsonResponse = response.body;
       // Process the response data as needed
       print(jsonResponse);
-      return ImagesDataModelFromJson(jsonResponse).images.i.toList();
+      var data = imageModelFromJson(jsonResponse);
+      return data.items.toList();
     } else {
       print('Request failed with status: ${response.statusCode}');
       return [];

@@ -1,245 +1,234 @@
 // To parse this JSON data, do
 //
-//     final propertyOwnerPropertiesModel = propertyOwnerPropertiesModelFromJson(jsonString);
+//     final imageModel = imageModelFromJson(jsonString);
 
+import 'package:meta/meta.dart';
 import 'dart:convert';
 
-ImagesDataModel ImagesDataModelFromJson(String str) =>
-    ImagesDataModel.fromJson(json.decode(str));
+ImageModel imageModelFromJson(String str) => ImageModel.fromJson(json.decode(str));
 
-String ImagesDataModelToJson(ImagesDataModel data) =>
-    json.encode(data.toJson());
+String imageModelToJson(ImageModel data) => json.encode(data.toJson());
 
-class ImagesDataModel {
-  final Images images;
+class ImageModel {
+    final String qt;
+    final List<ImageItem> items;
+    final int totalMatches;
+    final String searchClassification;
+    final bool isHardcodedClassification;
+    final int discountCount;
+    final int libraryCount;
+    final int cutoutCount;
+    final int vectorCount;
+    final int blackAndWhiteCount;
+    final String searchId;
 
-  ImagesDataModel({
-    required this.images,
-  });
+    ImageModel({
+        required this.qt,
+        required this.items,
+        required this.totalMatches,
+        required this.searchClassification,
+        required this.isHardcodedClassification,
+        required this.discountCount,
+        required this.libraryCount,
+        required this.cutoutCount,
+        required this.vectorCount,
+        required this.blackAndWhiteCount,
+        required this.searchId,
+    });
 
-  factory ImagesDataModel.fromJson(Map<String, dynamic> json) =>
-      ImagesDataModel(
-        images: Images.fromJson(json["IMAGES"]),
-      );
+    factory ImageModel.fromJson(Map<String, dynamic> json) => ImageModel(
+        qt: json["qt"],
+        items: List<ImageItem>.from(json["items"].map((x) => ImageItem.fromJson(x))),
+        totalMatches: json["totalMatches"],
+        searchClassification: json["searchClassification"],
+        isHardcodedClassification: json["isHardcodedClassification"],
+        discountCount: json["discountCount"],
+        libraryCount: json["libraryCount"],
+        cutoutCount: json["cutoutCount"],
+        vectorCount: json["vectorCount"],
+        blackAndWhiteCount: json["blackAndWhiteCount"],
+        searchId: json["searchId"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "IMAGES": images.toJson(),
-      };
+    Map<String, dynamic> toJson() => {
+        "qt": qt,
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "totalMatches": totalMatches,
+        "searchClassification": searchClassification,
+        "isHardcodedClassification": isHardcodedClassification,
+        "discountCount": discountCount,
+        "libraryCount": libraryCount,
+        "cutoutCount": cutoutCount,
+        "vectorCount": vectorCount,
+        "blackAndWhiteCount": blackAndWhiteCount,
+        "searchId": searchId,
+    };
 }
 
-class Images {
-  final List<ImageList> i;
-  final List<Results> results;
+class ImageItem {
+    final String uri;
+    final String type;
+    final Altids altids;
+    final Pseudo pseudo;
+    final String language;
+    final String caption;
+    final String license;
+    final Renditions renditions;
+    final String samePseudoCount;
+    final String apaLib;
+    final bool isNews;
+    final String subType;
+    final DateTime uploaddate;
 
-  Images({
-    required this.i,
-    required this.results,
-  });
+    ImageItem({
+        required this.uri,
+        required this.type,
+        required this.altids,
+        required this.pseudo,
+        required this.language,
+        required this.caption,
+        required this.license,
+        required this.renditions,
+        required this.samePseudoCount,
+        required this.apaLib,
+        required this.isNews,
+        required this.subType,
+        required this.uploaddate,
+    });
 
-  factory Images.fromJson(Map<String, dynamic> json) => Images(
-        i: List<ImageList>.from(json["I"].map((x) => ImageList.fromJson(x))),
-        results:
-            List<Results>.from(json["RESULTS"].map((x) => Results.fromJson(x))),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "I": List<dynamic>.from(i.map((x) => x.toJson())),
-        "RESULTS": List<dynamic>.from(results.map((x) => x.toJson())),
-      };
-}
-
-class ImageList {
-  final IClass empty;
-
-  ImageList({
-    required this.empty,
-  });
-
-  factory ImageList.fromJson(Map<String, dynamic> json) => ImageList(
-        empty: IClass.fromJson(json["\u0024"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "\u0024": empty.toJson(),
-      };
-}
-
-class IClass {
-  final String id;
-  final String ar;
-  final String li;
-  final String mr;
-  final String pr;
-  final String r;
-  final String pixX;
-  final String pixY;
-  final String type;
-  final String premium;
-  final String caption;
-  final String lc;
-  final String datetaken;
-  final String p;
-  final String t;
-  final String flp;
-  final String dataco;
-  final String imgseq;
-  final String pseudoid;
-  final DateTime uploaddate;
-  final String seocontribpriority;
-
-  IClass({
-    required this.id,
-    required this.ar,
-    required this.li,
-    required this.mr,
-    required this.pr,
-    required this.r,
-    required this.pixX,
-    required this.pixY,
-    required this.type,
-    required this.premium,
-    required this.caption,
-    required this.lc,
-    required this.datetaken,
-    required this.p,
-    required this.t,
-    required this.flp,
-    required this.dataco,
-    required this.imgseq,
-    required this.pseudoid,
-    required this.uploaddate,
-    required this.seocontribpriority,
-  });
-
-  factory IClass.fromJson(Map<String, dynamic> json) => IClass(
-        id: json["ID"],
-        ar: json["AR"],
-        li: json["LI"],
-        mr: json["MR"],
-        pr: json["PR"],
-        r: json["R"],
-        pixX: json["PIX_X"],
-        pixY: json["PIX_Y"],
-        type: json["TYPE"],
-        premium: json["PREMIUM"],
-        caption: json["CAPTION"],
-        lc: json["LC"],
-        datetaken: json["DATETAKEN"],
-        p: json["P"],
-        t: json["T"],
-        flp: json["FLP"],
-        dataco: json["DATACO"],
-        imgseq: json["IMGSEQ"],
-        pseudoid: json["pseudoid"],
+    factory ImageItem.fromJson(Map<String, dynamic> json) => ImageItem(
+        uri: json["uri"],
+        type: json["type"],
+        altids: Altids.fromJson(json["altids"]),
+        pseudo: Pseudo.fromJson(json["pseudo"]),
+        language: json["language"],
+        caption: json["caption"],
+        license: json["license"],
+        renditions: Renditions.fromJson(json["renditions"]),
+        samePseudoCount: json["samePseudoCount"],
+        apaLib: json["apaLib"],
+        isNews: json["isNews"],
+        subType: json["subType"],
         uploaddate: DateTime.parse(json["uploaddate"]),
-        seocontribpriority: json["seocontribpriority"],
-      );
+    );
 
-  Map<String, dynamic> toJson() => {
-        "ID": id,
-        "AR": ar,
-        "LI": li,
-        "MR": mr,
-        "PR": pr,
-        "R": r,
-        "PIX_X": pixX,
-        "PIX_Y": pixY,
-        "TYPE": type,
-        "PREMIUM": premium,
-        "CAPTION": caption,
-        "LC": lc,
-        "DATETAKEN": datetaken,
-        "P": p,
-        "T": t,
-        "FLP": flp,
-        "DATACO": dataco,
-        "IMGSEQ": imgseq,
-        "pseudoid": pseudoid,
+    Map<String, dynamic> toJson() => {
+        "uri": uri,
+        "type": type,
+        "altids": altids.toJson(),
+        "pseudo": pseudo.toJson(),
+        "language": language,
+        "caption": caption,
+        "license": license,
+        "renditions": renditions.toJson(),
+        "samePseudoCount": samePseudoCount,
+        "apaLib": apaLib,
+        "isNews": isNews,
+        "subType": subType,
         "uploaddate": uploaddate.toIso8601String(),
-        "seocontribpriority": seocontribpriority,
-      };
+    };
 }
 
-class Results {
-  final Result empty;
+class Altids {
+    final String id;
+    final String seq;
+    final String ref;
 
-  Results({
-    required this.empty,
-  });
+    Altids({
+        required this.id,
+        required this.seq,
+        required this.ref,
+    });
 
-  factory Results.fromJson(Map<String, dynamic> json) => Results(
-        empty: Result.fromJson(json["\u0024"]),
-      );
+    factory Altids.fromJson(Map<String, dynamic> json) => Altids(
+        id: json["id"],
+        seq: json["seq"],
+        ref: json["ref"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "\u0024": empty.toJson(),
-      };
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "seq": seq,
+        "ref": ref,
+    };
 }
 
-class Result {
-  final String images;
-  final String agencies;
-  final String searchTypeSi;
-  final String hardClass;
-  final String collections;
-  final String cds;
-  final String bestof;
-  final String commcount;
-  final String custcount;
-  final String totalagencyimages;
-  final String totalphotographerimages;
-  final String agencyimages;
-  final String agency;
-  final String st;
+class Pseudo {
+    final String id;
+    final String pseudono;
+    final String name;
 
-  Result({
-    required this.images,
-    required this.agencies,
-    required this.searchTypeSi,
-    required this.hardClass,
-    required this.collections,
-    required this.cds,
-    required this.bestof,
-    required this.commcount,
-    required this.custcount,
-    required this.totalagencyimages,
-    required this.totalphotographerimages,
-    required this.agencyimages,
-    required this.agency,
-    required this.st,
-  });
+    Pseudo({
+        required this.id,
+        required this.pseudono,
+        required this.name,
+    });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
-        images: json["IMAGES"],
-        agencies: json["AGENCIES"],
-        searchTypeSi: json["SEARCH_TYPE_SI"],
-        hardClass: json["HARD_CLASS"],
-        collections: json["COLLECTIONS"],
-        cds: json["CDS"],
-        bestof: json["BESTOF"],
-        commcount: json["COMMCOUNT"],
-        custcount: json["CUSTCOUNT"],
-        totalagencyimages: json["TOTALAGENCYIMAGES"],
-        totalphotographerimages: json["TOTALPHOTOGRAPHERIMAGES"],
-        agencyimages: json["AGENCYIMAGES"],
-        agency: json["AGENCY"],
-        st: json["ST"],
-      );
+    factory Pseudo.fromJson(Map<String, dynamic> json) => Pseudo(
+        id: json["id"],
+        pseudono: json["pseudono"],
+        name: json["name"],
+    );
 
-  Map<String, dynamic> toJson() => {
-        "IMAGES": images,
-        "AGENCIES": agencies,
-        "SEARCH_TYPE_SI": searchTypeSi,
-        "HARD_CLASS": hardClass,
-        "COLLECTIONS": collections,
-        "CDS": cds,
-        "BESTOF": bestof,
-        "COMMCOUNT": commcount,
-        "CUSTCOUNT": custcount,
-        "TOTALAGENCYIMAGES": totalagencyimages,
-        "TOTALPHOTOGRAPHERIMAGES": totalphotographerimages,
-        "AGENCYIMAGES": agencyimages,
-        "AGENCY": agency,
-        "ST": st,
-      };
+    Map<String, dynamic> toJson() => {
+        "id": id,
+        "pseudono": pseudono,
+        "name": name,
+    };
+}
+
+class Renditions {
+    final The450V comp;
+    final The450V zoomLarge;
+    final The450V the450V;
+    final The450V thumb;
+
+    Renditions({
+        required this.comp,
+        required this.zoomLarge,
+        required this.the450V,
+        required this.thumb,
+    });
+
+    factory Renditions.fromJson(Map<String, dynamic> json) => Renditions(
+        comp: The450V.fromJson(json["comp"]),
+        zoomLarge: The450V.fromJson(json["zoom_large"]),
+        the450V: The450V.fromJson(json["450v"]),
+        thumb: The450V.fromJson(json["thumb"]),
+    );
+
+    Map<String, dynamic> toJson() => {
+        "comp": comp.toJson(),
+        "zoom_large": zoomLarge.toJson(),
+        "450v": the450V.toJson(),
+        "thumb": thumb.toJson(),
+    };
+}
+
+class The450V {
+    final String mimetype;
+    final String href;
+    final int width;
+    final int height;
+
+    The450V({
+        required this.mimetype,
+        required this.href,
+        required this.width,
+        required this.height,
+    });
+
+    factory The450V.fromJson(Map<String, dynamic> json) => The450V(
+        mimetype: json["mimetype"],
+        href: json["href"],
+        width: json["width"],
+        height: json["height"],
+    );
+
+    Map<String, dynamic> toJson() => {
+        "mimetype": mimetype,
+        "href": href,
+        "width": width,
+        "height": height,
+    };
 }
